@@ -66,14 +66,6 @@ export class Donor {
   )
   nationalId: string;
 
-  @Column({ type: 'date' })
-  @IsDate({ message: 'Date of birth must be a valid date' })
-  @IsNotEmpty({ message: 'Date of birth is required' })
-  @MaxDate(new Date(new Date().setFullYear(new Date().getFullYear() - 16)), {
-    message: 'Donor must be at least 16 years old',
-  })
-  dateOfBirth: Date;
-
   @Column({ type: 'date', nullable: true })
   @IsDate({ message: 'Last donation date must be a valid date' })
   @MaxDate(new Date(), {

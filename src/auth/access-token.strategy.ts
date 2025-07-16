@@ -19,7 +19,10 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
   async validate(payload: JwtPayload): Promise<Donor> {
-    const donor: Donor = await this.findDonor.findOne({ id: payload.sub });
+    const donor: Donor | null = await this.findDonor.findOne({
+      id: payload.sub,
+    });
+    if (!donor) throw new Error('donor not found');
     return donor;
   }
 }

@@ -15,7 +15,9 @@ export class LoginService {
     const { nationalId } = donorLoginDto;
 
     // get the user from DB
-    const donor: Donor = await this.findDonorService.findOne({ nationalId });
+    const donor: Donor | null = await this.findDonorService.findOne({
+      nationalId,
+    });
 
     // check if the email or password is't correct
     if (!donor)

@@ -9,9 +9,8 @@ export class FindDonorService {
     @InjectRepository(Donor) private readonly donorRepo: Repository<Donor>,
   ) {}
 
-  async findOne(query: object): Promise<Donor> {
+  async findOne(query: object): Promise<Donor | null> {
     const donor: Donor | null = await this.donorRepo.findOneBy(query);
-    if (!donor) throw new NotFoundException('Donor not found');
     return donor;
   }
 }
