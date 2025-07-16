@@ -9,6 +9,7 @@ import { RequestModule } from './request/request.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donor } from './donor/entities/donor.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     BloodStockModule,
     HospitalModule,
     RequestModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
