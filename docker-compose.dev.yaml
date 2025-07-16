@@ -1,0 +1,26 @@
+services:
+  app:
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=blood_bank_db
+      - DB_SYNCHRONIZE=true
+      - DB_LOGGING=true
+    ports:
+      - '3000:3000'
+    command: npm run start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - nestjs-network
+
+  db:
+    ports:
+      - '5432:5432'
+    networks:
+      - nestjs-network
