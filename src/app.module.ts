@@ -11,6 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DonationModule } from './donation/donation.module';
 import { Donation } from './donation/entities/donation.entity';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { Donation } from './donation/entities/donation.entity';
     RequestModule,
     AuthModule,
     DonationModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

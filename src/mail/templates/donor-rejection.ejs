@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blood Donation Update</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6;">
+  <p>Dear <%= donorName %>,</p>
+
+  <p>
+    Thank you for your willingness to donate blood and support those in need. We truly appreciate your generous spirit.
+  </p>
+
+  <p>
+    After reviewing your recent donation request, we regret to inform you that we are currently unable to accept your donation
+    <% if (reason === 'interval') { %>
+      because the time since your last donation has not yet reached the required minimum of 3 months.
+    <% } else if (reason === 'test') { %>
+      due to your recent blood test results, which did not meet the eligibility requirements.
+    <% } else { %>
+      for one of the standard eligibility reasons.
+    <% } %>
+  </p>
+
+  <p>
+    If you have any questions or would like more details, please feel free to contact us. We hope to welcome your donation again in the future when eligible.
+  </p>
+
+  <p>Thank you again for your support.</p>
+
+  <p>Best regards,<br>
+  Blood Bank Team<br>
+  </p>
+</body>
+</html>
+</html>

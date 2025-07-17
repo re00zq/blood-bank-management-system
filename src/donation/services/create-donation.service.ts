@@ -5,23 +5,26 @@ import { Donation } from '../entities/donation.entity';
 import { Donor } from '../../donor/entities/donor.entity';
 import { CreateDonationDto } from '../dto/create-donation.dto';
 import { UpdateDonorService } from 'src/donor/services/update-donor.service';
+import { SendDonorRejectionService } from 'src/mail/services/send-donor-rejection.service';
 
 @Injectable()
 export class CreateDonationService {
   constructor(
     @InjectRepository(Donation)
     private readonly donationRepo: Repository<Donation>,
-
+    private readonly sendDonorRejectionService: SendDonorRejectionService,
     private readonly updateDonorService: UpdateDonorService,
   ) {}
 
   async createDonation(donor: Donor, dto: CreateDonationDto) {
-    // 1. Reject if virus test is positive
-    if (!dto.virusTestNegative) {
-      throw new BadRequestException(
-        'Donation rejected: virus test is positive.',
-      );
+    if (!donor) {
+      throw new BadRequestException('Donor not found');
     }
+
+    let rejectionReason: 'interval' | 'test' | null = null;
+
+    // 1. Reject if virus test is positive
+    if (!dto.virusTestNegative) rejectionReason = 'test';
 
     // 2. Reject if last donation was less than 3 months ago
     if (donor.lastDonationDate) {
@@ -29,10 +32,20 @@ export class CreateDonationService {
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
       if (new Date(donor.lastDonationDate) > threeMonthsAgo) {
-        throw new BadRequestException(
-          'Donation rejected: must wait at least 3 months since last donation.',
-        );
+        rejectionReason = 'interval';
       }
+    }
+
+    // If rejection reason is set, send email and throw exception
+    if (rejectionReason) {
+      await this.sendDonorRejectionService.execute({
+        donorEmail: donor.email,
+        donorName: donor.firstName + ' ' + donor.lastName,
+        reason: rejectionReason,
+      });
+      throw new BadRequestException(
+        `Donation rejected: ${rejectionReason === 'interval' ? 'Last donation was less than 3 months ago' : 'Virus test is positive'}`,
+      );
     }
 
     // 3. Create and save donation

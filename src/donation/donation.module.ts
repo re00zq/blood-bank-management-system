@@ -4,9 +4,10 @@ import { CreateDonationService } from './services/create-donation.service';
 import { DonorModule } from 'src/donor/donor.module';
 import { Donation } from './entities/donation.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Donation]), DonorModule],
+  imports: [TypeOrmModule.forFeature([Donation]), DonorModule, MailModule],
   controllers: [DonationController],
   providers: [CreateDonationService],
 })
