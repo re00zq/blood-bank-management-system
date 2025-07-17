@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DonorModule } from './donor/donor.module';
-import { BloodStockModule } from './blood-stock/blood-stock.module';
 import { HospitalModule } from './hospital/hospital.module';
 import { RequestModule } from './request/request.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -35,7 +34,6 @@ import { Donation } from './donation/entities/donation.entity';
       inject: [ConfigService],
     }),
     DonorModule,
-    BloodStockModule,
     HospitalModule,
     RequestModule,
     AuthModule,
