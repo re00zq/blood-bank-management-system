@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-  Query,
-  UseInterceptors,
-} from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
 import { RegisterService } from './services/register-donor.service';
 import { LoginService } from './services/login-donor.service';
 import { DonorLoginDto } from './dto/donor-login';
