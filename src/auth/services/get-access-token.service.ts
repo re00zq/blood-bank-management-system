@@ -10,9 +10,9 @@ export class GetAccessTokenService {
     private readonly configService: ConfigService,
   ) {}
 
-  async get(donorNationalId: string, donorEmail: string): Promise<string> {
+  async get(donorId: number, donorEmail: string): Promise<string> {
     // Creating payload by user data
-    const payload: JwtPayload = { sub: donorNationalId, email: donorEmail };
+    const payload: JwtPayload = { sub: donorId, email: donorEmail };
 
     // get access token
     const accessToken = await this.jwtService.signAsync(payload, {

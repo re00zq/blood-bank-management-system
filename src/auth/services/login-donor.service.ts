@@ -26,7 +26,7 @@ export class LoginService {
       );
 
     const accessToken = await this.getAccessTokenService.get(
-      donor.nationalId,
+      donor.id,
       donor.email,
     );
 

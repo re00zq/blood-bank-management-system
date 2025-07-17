@@ -10,6 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donor } from './donor/entities/donor.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DonationModule } from './donation/donation.module';
+import { Donation } from './donation/entities/donation.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [Donor],
+        entities: [Donor, Donation],
         synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         logging: configService.get<boolean>('DB_LOGGING'),
       }),
@@ -37,6 +39,7 @@ import { AuthModule } from './auth/auth.module';
     HospitalModule,
     RequestModule,
     AuthModule,
+    DonationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

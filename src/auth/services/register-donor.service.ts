@@ -38,7 +38,7 @@ export class RegisterService {
     const newDonor: Donor = await this.createDonor.create(donor);
 
     const accessToken = await this.getAccessTokenService.get(
-      newDonor.nationalId,
+      newDonor.id,
       newDonor.email,
     );
 

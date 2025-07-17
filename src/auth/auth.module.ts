@@ -6,10 +6,16 @@ import { RegisterService } from './services/register-donor.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { DonorModule } from 'src/donor/donor.module';
+import { AccessTokenStrategy } from './access-token.strategy';
 
 @Module({
   controllers: [AuthController],
-  providers: [GetAccessTokenService, LoginService, RegisterService],
+  providers: [
+    GetAccessTokenService,
+    LoginService,
+    RegisterService,
+    AccessTokenStrategy,
+  ],
   imports: [
     JwtModule.register({}),
     PassportModule.register({ defaultStrategy: 'jwt' }),
