@@ -1,98 +1,148 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Blood Bank Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A backend system built with **NestJS** and **PostgreSQL** to manage blood donations, hospital requests, and inventory tracking. It supports both **donor and admin roles** and ensures clean architecture, validation, and test-driven development.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📦 Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 🔐 Authentication
 
-## Project setup
+- Donors can register/login using their **National ID**.
+- Admins can login with email/password.
+- JWT-based authentication with **role-based access control** (RBAC).
 
-```bash
-$ npm install
-```
+### 🩸 Donation Management
 
-## Compile and run the project
+- Donors can submit blood donations.
+- Donations are validated:
+  - Last donation must be ≥ 3 months ago
+  - Virus test must be negative
+- Accepted donations update donor records.
 
-```bash
-# development
-$ npm run start
+### 🏥 Hospital Requests
 
-# watch mode
-$ npm run start:dev
+- Hospitals can submit requests for specific blood types.
+- System processes requests **in batches of 10+** using a **greedy algorithm** prioritizing:
+  1. Patient urgency (Immediate > Urgent > Normal)
+  2. Donation proximity (same city preferred)
 
-# production mode
-$ npm run start:prod
-```
+### 🧠 Matching Algorithm
 
-## Run tests
+- Uses custom prioritization logic for donations.
+- Automatically fulfills requests once threshold is met.
+
+### 🧪 Testing
+
+- Fully unit tested using **Jest**.
+- Mocked repositories for isolation.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+git clone https://github.com/your-username/blood-bank-management-system.git
+cd blood-bank-management-system
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 2. Install dependencies
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm install
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3. Configure `.env`
 
-## Resources
+```env
+PORT=3000
 
-Check out a few resources that may come in handy when working with NestJS:
+# PostgreSQL configuration
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=root
+POSTGRES_DB=blood_bank_db
+DB_SYNCHRONIZE=true
+DB_LOGGING=true
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# JWT configuration
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=1d
 
-## Support
+# Mail configuration
+MAIL_HOST=smtp.example.com
+MAIL_SERVICE=example
+SMTP_USERNAME=user@example.com
+SMTP_PASSWORD="your_SMPT_password"
+SMTP_PORT=587
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 4. Run the app
 
-## Stay in touch
+```bash
+npm run start:dev
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 5. Run tests
 
-## License
+```bash
+npm run test
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 📡 API Endpoints
+
+### 🔐 Auth Endpoints (`src/auth/auth.controller.ts`)
+
+- `POST /auth/login` — Donor login (by national ID)
+- `POST /auth/register` — Donor registration
+- `POST /auth/admin` — Admin login (by email/password)
+
+### 🧑‍💼 Admin Endpoints (`src/admin/admin.controller.ts`)
+
+- `POST /admin` — Create a new admin account
+
+### 🧑 Donor Endpoints (`src/donor/donor.controller.ts`)
+
+- `GET /donors` — List all donors (**admin only**, requires JWT)
+
+### 🩸 Donation Endpoints (`src/donation/donation.controller.ts`)
+
+- `POST /donations` — Submit a blood donation (**donor only**, requires JWT)
+
+### 🏥 Hospital Request Endpoints (`src/hospital-request/hospital-request.controller.ts`)
+
+- `POST /hospital-request` — Submit a hospital blood request
+
+### 🌐 Root Endpoint (`src/app.controller.ts`)
+
+- `GET /` — Health check (returns welcome message)
+
+---
+
+## 🛠 Tech Stack
+
+- **NestJS** (Modular architecture)
+- **PostgreSQL** via TypeORM
+- **Jest** for unit testing
+- **Class-validator** for DTO validation
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+  ├── auth/                  # Auth logic (donor + admin)
+  ├── admin/                 # Admin entity + services
+  ├── donor/                 # Donor entity + services
+  ├── donation/              # Donation entity + rules
+  ├── hospital-request/      # Request + fulfillment logic
+  └── mail/                  # Email rejection handling
+```
+
+Feel free to fork, contribute, or suggest enhancements!
