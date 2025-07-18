@@ -1,7 +1,7 @@
 // src/admin/services/admin-login.service.ts
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { GetAccessTokenService } from '../../auth/services/get-access-token.service';
+import { GetAccessTokenService } from './get-access-token.service';
 import { ValidateAdminService } from '../../admin/services/validate-admin.service';
 import { AdminLoginDto } from '../dto/admin-login.dto';
 

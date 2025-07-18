@@ -1,5 +1,3 @@
-// src/admin/services/create-admin.service.ts
-
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from '../entities/admin.entity';

@@ -2,7 +2,6 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Donation } from '../entities/donation.entity';
-import { Donor } from '../../donor/entities/donor.entity';
 import { CreateDonationDto } from '../dto/create-donation.dto';
 import { UpdateDonorService } from 'src/donor/services/update-donor.service';
 import { SendDonorRejectionService } from 'src/mail/services/send-donor-rejection.service';
@@ -27,10 +26,7 @@ export class CreateDonationService {
 
     let rejectionReason: 'interval' | 'test' | null = null;
 
-    // 1. Reject if virus test is positive
-    if (!dto.virusTestNegative) rejectionReason = 'test';
-
-    // 2. Reject if last donation was less than 3 months ago
+    // 1. Reject if last donation was less than 3 months ago
     if (donor.lastDonationDate) {
       const threeMonthsAgo = new Date();
       threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
@@ -39,6 +35,9 @@ export class CreateDonationService {
         rejectionReason = 'interval';
       }
     }
+
+    // 2. Reject if virus test is positive
+    if (!dto.virusTestNegative) rejectionReason = 'test';
 
     // If rejection reason is set, send email and throw exception
     if (rejectionReason) {

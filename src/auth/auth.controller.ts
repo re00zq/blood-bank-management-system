@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { RegisterService } from './services/register-donor.service';
-import { LoginService } from './services/login-donor.service';
+import { RegisterService } from './services/donor-register.service';
+import { LoginService } from './services/donor-login.service';
 import { DonorLoginDto } from './dto/donor-login.dto';
 import { CreateDonorDto } from 'src/donor/dto/create-donor.dto';
 import { AdminLoginDto } from './dto/admin-login.dto';
-import { AdminLoginService } from './services/login-admin.service';
+import { AdminLoginService } from './services/admin-login.service';
 
 @Controller('auth')
 export class AuthController {
