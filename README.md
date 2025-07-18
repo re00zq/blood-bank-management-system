@@ -113,6 +113,7 @@ npm run test
 ### 🩸 Donation Endpoints (`src/donation/donation.controller.ts`)
 
 - `POST /donations` — Submit a blood donation (**donor only**, requires JWT)
+- `GET /donations` — Get all donations (**for donor get its donations and for admin it get all donations**, requires JWT)
 
 ### 🏥 Hospital Request Endpoints (`src/hospital-request/hospital-request.controller.ts`)
 
