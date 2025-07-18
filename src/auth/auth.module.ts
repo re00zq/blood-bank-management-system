@@ -7,6 +7,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { DonorModule } from 'src/donor/donor.module';
 import { AccessTokenStrategy } from './access-token.strategy';
+import { AdminLoginService } from './services/login-admin.service';
+import { AdminModule } from 'src/admin/admin.module';
+import { AccessTokenGuard } from './guards/access-token.guard';
 
 @Module({
   controllers: [AuthController],
@@ -15,11 +18,19 @@ import { AccessTokenStrategy } from './access-token.strategy';
     LoginService,
     RegisterService,
     AccessTokenStrategy,
+    AdminLoginService,
+    AccessTokenGuard,
   ],
   imports: [
-    JwtModule.register({}),
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1d' },
+      }),
+    }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     DonorModule,
+    AdminModule,
   ],
 })
 export class AuthModule {}

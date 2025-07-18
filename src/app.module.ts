@@ -12,6 +12,8 @@ import { Donation } from './donation/entities/donation.entity';
 import { MailModule } from './mail/mail.module';
 import { HospitalRequestModule } from './hospital-request/hospital-request.module';
 import { HospitalRequest } from './hospital-request/entities/hospital-request.entity';
+import { AdminModule } from './admin/admin.module';
+import { Admin } from './admin/entities/admin.entity';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { HospitalRequest } from './hospital-request/entities/hospital-request.en
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [Donor, Donation, HospitalRequest],
+        entities: [Donor, Donation, HospitalRequest, Admin],
         synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         logging: configService.get<boolean>('DB_LOGGING'),
       }),
@@ -39,8 +41,10 @@ import { HospitalRequest } from './hospital-request/entities/hospital-request.en
     DonationModule,
     MailModule,
     HospitalRequestModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
+  exports: [TypeOrmModule],
 })
 export class AppModule {}

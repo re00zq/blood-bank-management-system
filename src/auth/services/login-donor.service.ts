@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { GetAccessTokenService } from './get-access-token.service';
-import { DonorLoginDto } from '../dto/donor-login';
+import { DonorLoginDto } from '../dto/donor-login.dto';
 import { Donor } from 'src/donor/entities/donor.entity';
 import { FindDonorService } from 'src/donor/services/find-donor.service';
 @Injectable()
@@ -28,6 +28,7 @@ export class LoginService {
     const accessToken = await this.getAccessTokenService.get(
       donor.id,
       donor.email,
+      'donor',
     );
 
     // send jwt token

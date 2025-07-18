@@ -10,14 +10,29 @@ export class GetAccessTokenService {
     private readonly configService: ConfigService,
   ) {}
 
-  async get(donorId: number, donorEmail: string): Promise<string> {
-    // Creating payload by user data
-    const payload: JwtPayload = { sub: donorId, email: donorEmail };
+  async get(
+    id: number,
+    email: string,
+    role: 'admin' | 'donor',
+  ): Promise<string> {
+    const payload: JwtPayload = {
+      sub: id,
+      email,
+      role,
+    };
+
+    // Get JWT configuration
+    const secret = this.configService.get<string>('JWT_SECRET');
+    const expiresIn = this.configService.get<string>('JWT_EXPIRES_IN');
+
+    if (!secret) {
+      throw new Error('JWT configuration error: JWT_SECRET is missing');
+    }
 
     // get access token
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get<string>('JWT_SECRET'),
-      expiresIn: this.configService.get<string>('JWT_EXPIRES_IN'),
+      secret,
+      expiresIn: expiresIn || '1d',
     });
 
     return accessToken;

@@ -40,6 +40,7 @@ export class RegisterService {
     const accessToken = await this.getAccessTokenService.get(
       newDonor.id,
       newDonor.email,
+      'donor',
     );
 
     return { accessToken, donor: newDonor };

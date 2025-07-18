@@ -6,6 +6,8 @@ import { Donor } from '../../donor/entities/donor.entity';
 import { CreateDonationDto } from '../dto/create-donation.dto';
 import { UpdateDonorService } from 'src/donor/services/update-donor.service';
 import { SendDonorRejectionService } from 'src/mail/services/send-donor-rejection.service';
+import { JwtPayload } from 'src/auth/types/JwtPayload';
+import { FindDonorService } from 'src/donor/services/find-donor.service';
 
 @Injectable()
 export class CreateDonationService {
@@ -13,10 +15,12 @@ export class CreateDonationService {
     @InjectRepository(Donation)
     private readonly donationRepo: Repository<Donation>,
     private readonly sendDonorRejectionService: SendDonorRejectionService,
+    private readonly findDonorService: FindDonorService,
     private readonly updateDonorService: UpdateDonorService,
   ) {}
 
-  async createDonation(donor: Donor, dto: CreateDonationDto) {
+  async createDonation(donorPayload: JwtPayload, dto: CreateDonationDto) {
+    const donor = await this.findDonorService.findOne({ id: donorPayload.sub });
     if (!donor) {
       throw new BadRequestException('Donor not found');
     }
