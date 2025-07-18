@@ -18,11 +18,10 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
       secretOrKey: configService.get<string>('JWT_SECRET'),
     });
   }
-  async validate(payload: JwtPayload): Promise<Donor> {
+  async validate(payload: JwtPayload): Promise<Donor | null> {
     const donor: Donor | null = await this.findDonor.findOne({
       id: payload.sub,
     });
-    if (!donor) throw new Error('donor not found');
     return donor;
   }
 }

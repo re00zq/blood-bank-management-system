@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DonorModule } from './donor/donor.module';
-import { RequestModule } from './request/request.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Donor } from './donor/entities/donor.entity';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { DonationModule } from './donation/donation.module';
 import { Donation } from './donation/entities/donation.entity';
 import { MailModule } from './mail/mail.module';
+import { HospitalRequestModule } from './hospital-request/hospital-request.module';
+import { HospitalRequest } from './hospital-request/entities/hospital-request.entity';
 
 @Module({
   imports: [
@@ -27,17 +28,17 @@ import { MailModule } from './mail/mail.module';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
-        entities: [Donor, Donation],
+        entities: [Donor, Donation, HospitalRequest],
         synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         logging: configService.get<boolean>('DB_LOGGING'),
       }),
       inject: [ConfigService],
     }),
     DonorModule,
-    RequestModule,
     AuthModule,
     DonationModule,
     MailModule,
+    HospitalRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
