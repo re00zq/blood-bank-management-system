@@ -1,31 +1,48 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - db
-    networks:
-      - nestjs-network
-
   db:
-    image: postgres:16.9
+    image: postgres
     restart: always
+    container_name: bloodbank_postgres
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_DB: blood_bank_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - nestjs-network
+    ports:
+      - '5432:5432'
+
+  app:
+    build: .
+    container_name: bloodbank_api
+    depends_on:
+      - db
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+
+      # PostgreSQL config
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: blood_bank_db
+      DB_SYNCHRONIZE: true
+      DB_LOGGING: true
+
+      # JWT
+      JWT_SECRET: your_jwt_secret
+      JWT_EXPIRES_IN: 1d
+
+      # Mail config (replace with production values if needed)
+      MAIL_HOST: smtp.gmail.com
+      MAIL_SERVICE: gmail
+      SMTP_USERNAME: re00zq@gmail.com
+      SMTP_PASSWORD: 'qqejafpsqlhsunts'
+      SMTP_PORT: 587
+
+    command: npm run start:prod
 
 volumes:
   postgres_data:
-
-networks:
-  nestjs-network:
-    driver: bridge

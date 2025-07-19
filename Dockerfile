@@ -1,23 +1,23 @@
-# Use official Node.js 18 as base image
+# Use an official Node.js runtime as a base image
 FROM node:22
 
-# Set working directory
-WORKDIR /usr/src/app
+# Create app directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy dependency files
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the full project
 COPY . .
 
-# Build the application for production
+# Build the app
 RUN npm run build
 
-# Expose the application port
+# Expose the app port
 EXPOSE 3000
 
-# Default command (overridden in docker-compose)
+# Run the app
 CMD ["npm", "run", "start:prod"]
